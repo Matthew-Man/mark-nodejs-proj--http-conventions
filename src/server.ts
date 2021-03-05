@@ -30,12 +30,12 @@ app.get("/signatures", (req, res) => {
 });
 
 app.post("/signatures", (req, res) => {
-  const { name, message } = req.body;
+  const { name, message } = req.body; // destructuring name and message object
   if (typeof name === "string") {
     const createdSignature = insertSignature({
       name: name,
       // only include message if it is a string
-      message: typeof message === "string" ? message : undefined,
+      message: typeof message === "string" ? message : undefined, //return message if it's a string, otherwise undefined
     });
 
     res.status(201).json({
@@ -55,8 +55,14 @@ app.post("/signatures", (req, res) => {
 });
 
 app.get("/signatures/:epoch", (req, res) => {
+  // /tvshow/:tvId
+  // localhost:3000/tvshow/gameofthrones
+  // req.params = {tvId: "65"}
+  // Okay lets send back only tv show with ID "gameofthrones"
+  // Helpful for scaling
   // :epoch is a route parameter
   //  see documentation: https://expressjs.com/en/guide/routing.html
+  // fetch(url/signatures/123456789, method=GET)
   const epochId = parseInt(req.params.epoch); // params are string type
   const signature = findSignatureByEpoch(epochId);
   if (signature) {
